@@ -18,8 +18,8 @@
     "noImplicitThis": false,
     "strictNullChecks": false
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"],
+  "include": ["."],
+  "exclude": ["node_modules", "front/**/*"],
   "ts-node": {
     "esm": true
   }

@@ -7,11 +7,9 @@
   "scripts": {
     "start": "ts-node ./index.ts",
     "start:dev": "nodemon",
-    "prettier": "prettier --config .prettierrc --write .",
-    "lint": "eslint . --ext .ts --ext .mts",
-    "lint:fix": "eslint . --ext .ts --ext .mts --fix"
+    "prettier": "prettier --config .prettierrc --write ."
   },
-  "author": "Mark Karnaukh",
+  "author": "Mark Karnaukh <23059751+mark-karnaukh@users.noreply.github.com>",
   "keywords": [],
   "license": "ISC",
   "devDependencies": {
