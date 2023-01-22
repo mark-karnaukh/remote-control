@@ -18,7 +18,7 @@ console.log(`Start web socket server on the ${WS_PORT} port!`);
 runWebSocketServer(WS_PORT);
 
 process.on('SIGINT', function () {
-  console.log('\nGracefully shutting down from SIGINT (Ctrl-C)');
+  console.log(`\nShutting down the process ${process.pid} (Ctrl-C)`);
   // some other closing procedures go here
   process.exit(0);
 });
