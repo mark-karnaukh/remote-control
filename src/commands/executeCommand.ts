@@ -14,6 +14,7 @@ import {
 
 import { navigation } from './navigation.js';
 import { draw } from './draw.js';
+import { printScreen } from './printScreen.js';
 
 const commands = new Map();
 
@@ -55,9 +56,9 @@ commands.set(DRAW_SQUARE_REG_EXP, async (ws: WebSocket, value) => {
 });
 
 // Screen image
-commands.set(PRINT_SCREEN_REG_EXP, () =>
-  console.log('print screen command received...'),
-);
+commands.set(PRINT_SCREEN_REG_EXP, async (ws: WebSocket) => {
+  ws.send(await printScreen.prnt_scrn());
+});
 
 export const executeCommand = (command: string, ws: WebSocket): void => {
   if (!new RegExp(VALID_COMMAND_REG_EXP).test(command)) {
