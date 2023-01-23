@@ -12,7 +12,7 @@ export const runWebSocketServer = (port: number): void => {
     ws.on('message', function message(data) {
       console.log('received: %s', data);
 
-      executeCommand(data.toString());
+      executeCommand(data.toString(), ws);
     });
 
     ws.on('close', () => console.log('Client has disconnected!'));

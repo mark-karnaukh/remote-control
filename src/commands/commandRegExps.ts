@@ -5,6 +5,7 @@ export const MOUSE_UP_REG_EXP = /mouse_up [1-9][0-9]*/g;
 export const MOUSE_DOWN_REG_EXP = /mouse_down [1-9][0-9]*/g;
 export const MOUSE_LEFT_REG_EXP = /mouse_left [1-9][0-9]*/g;
 export const MOUSE_RIGHT_REG_EXP = /mouse_right [1-9][0-9]*/g;
+export const MOUSE_POSITION_REG_EXP = /mouse_position/g;
 
 // Drawing
 export const DRAW_SQUARE_REG_EXP = /draw_square [1-9][0-9]*/g;

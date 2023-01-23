@@ -1,3 +1,4 @@
+import { WebSocket } from 'ws';
 import {
   MOUSE_DOWN_REG_EXP,
   MOUSE_LEFT_REG_EXP,
@@ -8,26 +9,33 @@ import {
   DRAW_RECTANGLE_REG_EXP,
   DRAW_SQUARE_REG_EXP,
   PRINT_SCREEN_REG_EXP,
+  MOUSE_POSITION_REG_EXP,
 } from './commandRegExps.js';
+
+import { navigation } from './navigation.js';
 
 const commands = new Map();
 
 // Navigation
-commands.set(MOUSE_DOWN_REG_EXP, () =>
-  console.log('mouse down command received...'),
-);
+commands.set(MOUSE_DOWN_REG_EXP, async (ws: WebSocket, value: number) => {
+  ws.send(await navigation.mouse_down(value));
+});
 
-commands.set(MOUSE_LEFT_REG_EXP, () =>
-  console.log('mouse left command received...'),
-);
+commands.set(MOUSE_LEFT_REG_EXP, async (ws: WebSocket, value: number) => {
+  ws.send(await navigation.mouse_left(value));
+});
 
-commands.set(MOUSE_RIGHT_REG_EXP, () =>
-  console.log('mouse right command received...'),
-);
+commands.set(MOUSE_RIGHT_REG_EXP, async (ws: WebSocket, value: number) => {
+  ws.send(await navigation.mouse_right(value));
+});
 
-commands.set(MOUSE_UP_REG_EXP, () =>
-  console.log('mouse up command received...'),
-);
+commands.set(MOUSE_UP_REG_EXP, async (ws: WebSocket, value: number) => {
+  ws.send(await navigation.mouse_up(value));
+});
+
+commands.set(MOUSE_POSITION_REG_EXP, async (ws: WebSocket) => {
+  ws.send(await navigation.mouse_position());
+});
 
 // Drawing
 commands.set(DRAW_CIRCLE_REG_EXP, () =>
@@ -47,14 +55,16 @@ commands.set(PRINT_SCREEN_REG_EXP, () =>
   console.log('print screen command received...'),
 );
 
-export const executeCommand = (command: string): void => {
+export const executeCommand = (command: string, ws: WebSocket): void => {
   if (!new RegExp(VALID_COMMAND_REG_EXP).test(command)) {
     return console.error(`${command} is invalid command format.`);
   }
 
+  const [_, ...values] = command.split(' ');
+
   commands.forEach((cb, regExp) => {
     if (new RegExp(regExp).test(command)) {
-      cb(command);
+      cb(ws, ...values.map((value) => Number(value)));
     }
   });
 };
