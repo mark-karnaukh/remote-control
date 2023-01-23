@@ -13,6 +13,7 @@ import {
 } from './commandRegExps.js';
 
 import { navigation } from './navigation.js';
+import { draw } from './draw.js';
 
 const commands = new Map();
 
@@ -38,17 +39,20 @@ commands.set(MOUSE_POSITION_REG_EXP, async (ws: WebSocket) => {
 });
 
 // Drawing
-commands.set(DRAW_CIRCLE_REG_EXP, () =>
-  console.log('draw circle command received...'),
+commands.set(DRAW_CIRCLE_REG_EXP, async (ws: WebSocket, radius: number) => {
+  ws.send(await draw.draw_circle(radius));
+});
+
+commands.set(
+  DRAW_RECTANGLE_REG_EXP,
+  async (ws: WebSocket, x: number, y: number) => {
+    ws.send(await draw.draw_rectangle(x, y));
+  },
 );
 
-commands.set(DRAW_RECTANGLE_REG_EXP, () =>
-  console.log('draw rectangle command received...'),
-);
-
-commands.set(DRAW_SQUARE_REG_EXP, () =>
-  console.log('draw square command received...'),
-);
+commands.set(DRAW_SQUARE_REG_EXP, async (ws: WebSocket, value) => {
+  ws.send(await draw.draw_square(value));
+});
 
 // Screen image
 commands.set(PRINT_SCREEN_REG_EXP, () =>
@@ -64,7 +68,7 @@ export const executeCommand = (command: string, ws: WebSocket): void => {
 
   commands.forEach((cb, regExp) => {
     if (new RegExp(regExp).test(command)) {
-      cb(ws, ...values.map((value) => Number(value)));
+      cb(ws, ...values.map((value) => parseFloat(value)));
     }
   });
 };
